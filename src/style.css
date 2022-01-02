@@ -1,0 +1,55 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "Roboto", sans-serif;
+}
+body {
+	background: #f5f6f9;
+}
+a,
+small,
+strong {
+	text-decoration: none;
+	font-family: "Roboto", sans-serif;
+	color: #333;
+}
+span {
+	font-family: "Roboto", sans-serif;
+}
+a:hover {
+	color: #d32f2f;
+}
+.wish_button {
+	cursor: pointer;
+}
+.slick-arrow.slick-prev,
+.slick-arrow.slick-next {
+	position: absolute;
+
+	top: -40px;
+}
+.slick-arrow.slick-prev::before,
+.slick-arrow.slick-next::before {
+	background: transparent;
+	color: #333;
+}
+.slick-arrow.slick-next {
+	position: absolute;
+	top: -40px;
+}
+.slick-arrow.slick-next {
+	right: 0;
+}
+.slick-arrow.slick-prev {
+	left: 93%;
+}
+.ql-container.ql-snow img {
+	width: 70px;
+	height: 70px;
+}
+.ql-container.ql-snow {
+	height: 150px;
+	max-height: 150px;
+	/* overflow: scroll; */
+}
