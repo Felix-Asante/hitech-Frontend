@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Paper, Box, Typography, Button } from "@mui/material";
+import {
+	Paper,
+	Box,
+	Typography,
+	Button,
+	CircularProgress,
+} from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -10,6 +16,7 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import FilePondPluginFileEncode from "filepond-plugin-file-encode";
 import http from "../../../services/app-service";
+import Snackbars from "../../Snackbars";
 
 // REGISTER FILEPOND DEPENDENCIES
 registerPlugin(
@@ -50,6 +57,9 @@ const NewProduct = () => {
 	const classes = useStyle();
 	const [description, setDescription] = useState("");
 	const [categoryData, setCategoryData] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
+	const [response, setResponse] = useState({});
+	const [open, setOpen] = useState(false);
 	const descriptionHandler = (value) => {
 		setDescription(value);
 	};
@@ -96,6 +106,7 @@ const NewProduct = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		setIsLoading(true);
 		const productName = productNameRef.current.value.trim();
 		const quantity = quantityRef.current.value.trim();
 		const price = priceRef.current.value.trim();
@@ -122,10 +133,21 @@ const NewProduct = () => {
 			.requestPOST("/product", data)
 			.then((res) => {
 				console.log(res);
+				setResponse({ message: res.data.message, status: res.status });
 			})
 			.catch((err) => {
 				console.log(err);
+				setResponse({ message: "An error occurred", status: 404 });
 			});
+		setIsLoading(false);
+		setOpen(true);
+	};
+	const handleClose = (event, reason) => {
+		if (reason === "clickaway") {
+			return;
+		}
+
+		setOpen(false);
 	};
 	return (
 		<Box sx={{ flex: "4", p: 4, height: "calc(100vh - 80px)" }}>
@@ -277,15 +299,43 @@ const NewProduct = () => {
 							labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
 						/>
 					</Box>
-					<Button
-						color="error"
-						type="submit"
-						variant="contained"
-						className={classes.submit}
+					<Box
+						sx={{
+							position: "relative",
+							display: "flex",
+							flexDirection: "column",
+						}}
 					>
-						Add product
-					</Button>
+						<Button
+							color="error"
+							type="submit"
+							variant="contained"
+							className={classes.submit}
+							disabled={isLoading}
+							sx={{ flex: 1 }}
+						>
+							Add product
+						</Button>
+						{isLoading && (
+							<CircularProgress
+								sx={{
+									color: "error",
+									position: "absolute",
+									top: "50%",
+									left: "50%",
+									marginTop: "-12px",
+									marginLeft: "-12px",
+								}}
+							/>
+						)}
+					</Box>
 				</form>
+				<Snackbars
+					open={open}
+					message={response.message}
+					status={response.status}
+					handleClose={handleClose}
+				/>
 			</Paper>
 		</Box>
 	);
