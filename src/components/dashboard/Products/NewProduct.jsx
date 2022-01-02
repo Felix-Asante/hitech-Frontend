@@ -133,13 +133,14 @@ const NewProduct = () => {
 			.requestPOST("/product", data)
 			.then((res) => {
 				console.log(res);
+				setIsLoading(false);
 				setResponse({ message: res.data.message, status: res.status });
 			})
 			.catch((err) => {
 				console.log(err);
+				setIsLoading(false);
 				setResponse({ message: "An error occurred", status: 404 });
 			});
-		setIsLoading(false);
 		setOpen(true);
 	};
 	const handleClose = (event, reason) => {
