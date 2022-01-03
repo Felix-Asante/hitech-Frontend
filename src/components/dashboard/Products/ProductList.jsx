@@ -1,9 +1,10 @@
-import { Avatar, Box } from "@mui/material";
+import { Avatar, Box, CircularProgress, Typography } from "@mui/material";
 import React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import comp from "../../../assets/comp.jpeg";
 import { Delete, Edit } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import http from "../../../services/app-service";
 const ProductList = () => {
 	const columns = [
 		{ field: "id", headerName: "ID", width: 100 },
@@ -26,10 +27,10 @@ const ProductList = () => {
 			renderCell: (params) => {
 				return (
 					<Box sx={{ display: "flex", gap: "10px" }}>
-						<Link to={`/product/update/${params.row.id}`}>
+						<Link to={`/product/update/${params.row.key}`}>
 							<Edit color="success" sx={{ fontSize: "18px" }} />
 						</Link>
-						<Link to={`/product/delete/${params.row.id}`}>
+						<Link to={`/product/delete/${params.row.key}`}>
 							<Delete color="error" sx={{ fontSize: "18px" }} />
 						</Link>
 					</Box>
@@ -37,129 +38,78 @@ const ProductList = () => {
 			},
 		},
 	];
-	const rows = [
-		{
-			id: 1,
-			productName: "HeadPhone",
-			stock: "122",
-			price: "20",
-			avatar: comp,
-		},
-		{
-			id: 2,
-			productName: "HeadPhone",
-			stock: "122",
-			price: "20",
-			avatar: comp,
-		},
-		{
-			id: 3,
-			productName: "HeadPhone",
-			stock: "122",
-			price: "20",
-			avatar: comp,
-		},
-		{
-			id: 4,
-			productName: "HeadPhone",
-			stock: "122",
-			price: "20",
-			avatar: comp,
-		},
-		{
-			id: 5,
-			productName: "Phone",
-			stock: "122",
-			price: "20",
-			avatar: comp,
-		},
-		{
-			id: 6,
-			productName: "Phone",
-			stock: "122",
-			price: "20",
-			avatar: comp,
-		},
-		{
-			id: 7,
-			productName: "Phone",
-			stock: "122",
-			price: "20",
-			avatar: comp,
-		},
-		{
-			id: 8,
-			productName: "Phone",
-			stock: "122",
-			price: "20",
-			avatar: comp,
-		},
-		{
-			id: 9,
-			productName: "Phone",
-			stock: "122",
-			price: "20",
-			avatar: comp,
-		},
-		{
-			id: 10,
-			productName: "Bag",
-			stock: "122",
-			price: "20",
-			avatar: comp,
-		},
-		{
-			id: 11,
-			productName: "Bag",
-			stock: "122",
-			price: "20",
-			avatar: comp,
-		},
-		{
-			id: 12,
-			productName: "Bag",
-			stock: "122",
-			price: "20",
-			avatar: comp,
-		},
-		{
-			id: 13,
-			productName: "oven",
-			stock: "122",
-			price: "20",
-			avatar: comp,
-		},
-		{
-			id: 14,
-			productName: "oven",
-			stock: "122",
-			price: "20",
-			avatar: comp,
-		},
-		{
-			id: 15,
-			productName: "oven",
-			stock: "122",
-			price: "20",
-			avatar: comp,
-		},
-		{
-			id: 16,
-			productName: "oven",
-			stock: "122",
-			price: "20",
-			avatar: comp,
-		},
-	];
+
+	const [rows, setRows] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
+	useEffect(() => {
+		setIsLoading(true);
+		http
+			.requestGET("/product")
+			.then((res) => {
+				const products = [];
+				res.data.data.forEach((item, index) => {
+					const data = {
+						id: index + 1,
+						productName: item.productName,
+						stock: item.quantity,
+						price: item.price,
+						avatar: item.productPhotos[0].image,
+						key: item._id,
+					};
+					products.push(data);
+				});
+
+				setRows(products);
+			})
+			.catch((err) => console.log(err));
+
+		const delay = setTimeout(() => {
+			setIsLoading(false);
+		}, 2000);
+
+		return () => {
+			clearTimeout(delay);
+		};
+	}, []);
 	return (
-		<DataGrid
-			rows={rows}
-			columns={columns}
-			pageSize={8}
-			rowsPerPageOptions={[8]}
-			checkboxSelection
-			disableSelectionOnClick
-		/>
+		<>
+			{!isLoading && rows.length > 0 && (
+				<DataGrid
+					rows={rows}
+					columns={columns}
+					pageSize={8}
+					rowsPerPageOptions={[8]}
+					checkboxSelection
+					disableSelectionOnClick
+				/>
+			)}
+
+			{isLoading && (
+				<Box
+					sx={{
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+						height: "80%",
+					}}
+				>
+					<CircularProgress color="error" />
+					{/* <h1>Loading</h1> */}
+				</Box>
+			)}
+			{!isLoading && rows.length === 0 && (
+				<Box
+					sx={{
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+						height: "80%",
+					}}
+				>
+					<Typography color="error">No Product Found</Typography>
+				</Box>
+			)}
+		</>
 	);
 };
 

@@ -25,9 +25,9 @@ const ProductPage = () => {
 				Create new Category
 			</Button>
 			{/* </Link> */}
-			<CategoryModal open={open} modelCloseHandler={modelCloseHandler} />
 
 			<ProductList />
+			<CategoryModal open={open} modelCloseHandler={modelCloseHandler} />
 		</Box>
 	);
 };
