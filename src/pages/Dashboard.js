@@ -6,6 +6,7 @@ import NewProduct from "../components/dashboard/Products/NewProduct";
 import ProductPage from "../components/dashboard/Products/ProductPage";
 import Side from "../components/dashboard/Side";
 import Topbar from "../components/dashboard/Topbar";
+import ProductDetails from "../components/ProductDetails";
 const Dashboard = () => {
 	return (
 		<Box>
@@ -17,6 +18,7 @@ const Dashboard = () => {
 					<Route path="dashboard" element={<Home />} />
 					<Route path="products" element={<ProductPage />} />
 					<Route path="new-product" element={<NewProduct />} />
+					<Route path="/products/u/:id" element={<ProductDetails />} />
 				</Routes>
 				{/* </Box> */}
 			</Box>

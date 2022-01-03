@@ -1,7 +1,7 @@
 import { Avatar, Box, CircularProgress, Typography } from "@mui/material";
 import React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Delete, Edit } from "@mui/icons-material";
+import { Delete, RemoveRedEye } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import http from "../../../services/app-service";
@@ -28,10 +28,10 @@ const ProductList = () => {
 			renderCell: (params) => {
 				return (
 					<Box sx={{ display: "flex", gap: "10px" }}>
-						<Link to={`${API_BASE_URL}/product/u/${params.row.key}`}>
-							<Edit color="success" sx={{ fontSize: "18px" }} />
+						<Link to={`./u/${params.row.key}`}>
+							<RemoveRedEye color="success" sx={{ fontSize: "18px" }} />
 						</Link>
-						<Link to={`${API_BASE_URL}/product/d/${params.row.key}`}>
+						<Link to={`./d/${params.row.key}`}>
 							<Delete color="error" sx={{ fontSize: "18px" }} />
 						</Link>
 					</Box>

@@ -4,6 +4,8 @@
 	box-sizing: border-box;
 	font-family: "Roboto", sans-serif;
 }
+@import "~react-image-gallery/styles/css/image-gallery.css";
+
 body {
 	background: #f5f6f9;
 }
