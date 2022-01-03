@@ -1,8 +1,9 @@
 import axios from "axios";
+import { API_BASE_URL } from "../constants/constants";
 class AppService {
 	domain;
 	constructor() {
-		this.domain = "http://localhost:8000";
+		this.domain = API_BASE_URL;
 	}
 
 	getHeaders() {

@@ -5,6 +5,7 @@ import { Delete, Edit } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import http from "../../../services/app-service";
+import { API_BASE_URL } from "../../../constants/constants";
 const ProductList = () => {
 	const columns = [
 		{ field: "id", headerName: "ID", width: 100 },
@@ -27,10 +28,10 @@ const ProductList = () => {
 			renderCell: (params) => {
 				return (
 					<Box sx={{ display: "flex", gap: "10px" }}>
-						<Link to={`/product/update/${params.row.key}`}>
+						<Link to={`${API_BASE_URL}/product/u/${params.row.key}`}>
 							<Edit color="success" sx={{ fontSize: "18px" }} />
 						</Link>
-						<Link to={`/product/delete/${params.row.key}`}>
+						<Link to={`${API_BASE_URL}/product/d/${params.row.key}`}>
 							<Delete color="error" sx={{ fontSize: "18px" }} />
 						</Link>
 					</Box>
