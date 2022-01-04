@@ -295,7 +295,8 @@ const NewProduct = () => {
 							files={files}
 							onupdatefiles={setFiles}
 							allowMultiple={true}
-							maxFiles={3}
+							maxFiles={4}
+							required={true}
 							name="productPhotos"
 							labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
 						/>

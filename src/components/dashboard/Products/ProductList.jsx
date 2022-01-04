@@ -1,11 +1,33 @@
 import { Avatar, Box, CircularProgress, Typography } from "@mui/material";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Delete, RemoveRedEye } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
 import http from "../../../services/app-service";
+
 const ProductList = () => {
+	const [isDeleting, setIsDeleting] = useState(false);
+
+	const handleDelete = (id) => {
+		const action = window.confirm("Do you want to delete this product");
+		if (!action) {
+			return;
+		}
+
+		setIsDeleting(true);
+		http
+			.requestDELETE(`/product/${id}`)
+			.then((res) => {
+				console.log(res);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+
+		return () => {
+			setIsDeleting(false);
+		};
+	};
 	const columns = [
 		{ field: "id", headerName: "ID", width: 100 },
 		{
@@ -26,13 +48,18 @@ const ProductList = () => {
 			width: 130,
 			renderCell: (params) => {
 				return (
-					<Box sx={{ display: "flex", gap: "10px" }}>
-						<Link to={`./u/${params.row.key}`}>
+					<Box sx={{ display: "flex", gap: "10px", alignItems: "center" }}>
+						<Link to={`./u/${params.row.key}`} style={{ lineHeight: 0 }}>
 							<RemoveRedEye color="success" sx={{ fontSize: "18px" }} />
 						</Link>
-						<Link to={`./d/${params.row.key}`}>
-							<Delete color="error" sx={{ fontSize: "18px" }} />
-						</Link>
+
+						<Delete
+							color="error"
+							sx={{ fontSize: "18px" }}
+							onClick={() => {
+								handleDelete(params.row.key);
+							}}
+						/>
 					</Box>
 				);
 			},
@@ -71,7 +98,7 @@ const ProductList = () => {
 		return () => {
 			clearTimeout(delay);
 		};
-	}, []);
+	}, [isDeleting]);
 	return (
 		<>
 			{!isLoading && rows.length > 0 && (

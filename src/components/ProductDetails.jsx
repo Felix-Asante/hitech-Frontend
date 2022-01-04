@@ -8,19 +8,38 @@ import {
 	Typography,
 	Button,
 	Skeleton,
+	Backdrop,
+	CircularProgress,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import ImageGallery from "react-image-gallery";
-import { Delete } from "@mui/icons-material/";
+import { Delete, Http } from "@mui/icons-material/";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import useFetch from "../hooks/useFetch";
 import ReactHtmlParser from "react-html-parser";
+import deleteById from "../services/deleteById";
+import http from "../services/app-service";
+import { useNavigate } from "react-router-dom";
+
 const ProductDetails = () => {
-	const handleProductDelete = (id) => {};
+	const Navigate = useNavigate();
+	const [isDeleting, setIsDeleting] = useState(false);
+	const handleProductDelete = (id) => {
+		setIsDeleting(true);
+		const endPoint = "/product/" + id;
+		http
+			.requestDELETE(endPoint)
+			.then((res) => {
+				setIsDeleting(false);
+				Navigate(-1);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
 	const { id } = useParams();
 	const { isLoading, error, data } = useFetch(`/product/${id}`);
-	console.log(data);
 	const photos =
 		data.productPhotos &&
 		data.productPhotos.reduce((prevImage, currentImage) => {
@@ -163,6 +182,11 @@ const ProductDetails = () => {
 				<Typography textAlign="center" color="error">
 					Error
 				</Typography>
+			)}
+			{isDeleting && (
+				<Backdrop sx={{ color: "#fff", zIndex: 4000 }} open={isDeleting}>
+					<CircularProgress color="error" />
+				</Backdrop>
 			)}
 		</Box>
 	);
