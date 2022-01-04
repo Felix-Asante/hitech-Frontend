@@ -24,6 +24,7 @@ const Topbar = () => {
 					Hitech Admin
 				</Typography>
 				<Box className={classes.toolbarIcons}>
+					<a href="/">Go to website</a>
 					<Badge badgeContent={10} max={9} color="error">
 						<Notifications />
 					</Badge>

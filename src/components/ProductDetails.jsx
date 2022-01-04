@@ -88,13 +88,14 @@ const ProductDetails = () => {
 							)}
 							{isLoading && <Skeleton variant="text" />}
 
-							{!isLoading && (
+							{/* {!isLoading && (
 								<Box sx={{ mb: 1, mt: 1 }}>
 									{ReactHtmlParser(data.description)}
 								</Box>
-							)}
+							)} */}
 							{isLoading && <Skeleton variant="text" />}
-
+							<br />
+							<br />
 							{!isLoading && (
 								<Typography
 									component="span"
@@ -158,7 +159,10 @@ const ProductDetails = () => {
 								<Tab>Description</Tab>
 								<Tab>Review</Tab>
 							</TabList>
-							<TabPanel style={{ paddingTop: "1rem" }}>
+							<TabPanel
+								style={{ paddingTop: "1rem" }}
+								className="product-description"
+							>
 								{!isLoading && ReactHtmlParser(data.description)}
 								{isLoading && <Skeleton variant="text" />}
 								{isLoading && <Skeleton variant="text" />}
