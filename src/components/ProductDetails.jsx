@@ -7,73 +7,124 @@ import {
 	Stack,
 	Typography,
 	Button,
+	Skeleton,
 } from "@mui/material";
-
+import { useParams } from "react-router-dom";
 import ImageGallery from "react-image-gallery";
 import { Delete } from "@mui/icons-material/";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
-
+import useFetch from "../hooks/useFetch";
+import ReactHtmlParser from "react-html-parser";
 const ProductDetails = () => {
-	const photos = [
-		{
-			original: "https://picsum.photos/id/1018/1000/600/",
-			thumbnail: "https://picsum.photos/id/1018/1000/600/",
-		},
-		{
-			original: "https://picsum.photos/id/1015/1000/600/",
-			thumbnail: "https://picsum.photos/id/1015/1000/600/",
-		},
-	];
+	const handleProductDelete = (id) => {};
+	const { id } = useParams();
+	const { isLoading, error, data } = useFetch(`/product/${id}`);
+	console.log(data);
+	const photos =
+		data.productPhotos &&
+		data.productPhotos.reduce((prevImage, currentImage) => {
+			return prevImage.concat({
+				original: currentImage.image,
+				thumbnail: currentImage.image,
+			});
+		}, []);
 	return (
 		<Box sx={{ flex: 4, height: "calc(100vh - 80px)", p: 4 }}>
 			<Paper sx={{ p: 2, mb: 2 }}>
 				<Stack direction="row" spacing={4}>
 					<Box sx={{ flex: 1 }}>
-						<ImageGallery
-							items={photos}
-							infinite={false}
-							showNav={false}
-							showPlayButton={false}
-							showFullscreenButton={false}
-						/>
+						{!isLoading && (
+							<ImageGallery
+								items={photos}
+								infinite={false}
+								showNav={false}
+								showPlayButton={false}
+								showFullscreenButton={false}
+							/>
+						)}
+						{isLoading && (
+							<Stack>
+								<Skeleton variant="rectangular" width={410} height={250} />
+								<Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+									<Skeleton variant="rectangular" width={90} height={50} />
+									<Skeleton variant="rectangular" width={90} height={50} />
+								</Stack>
+							</Stack>
+						)}
 					</Box>
 					<Box sx={{ flex: 1 }}>
-						{/* IF QUANTITY > 0 IN STOCK */}
-						<Typography variant="h4" component="h4" gutterBottom>
-							Product detail page
-						</Typography>
-						<Chip label="In stock" color="success" />
-						<Typography sx={{ mb: 1, mt: 1 }}>
-							Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-							Quibusdam in consequatur amet eum porro quam!....
-						</Typography>
-						<Typography
-							component="span"
-							variant="span"
-							sx={{ fontWeight: "bold" }}
-						>
-							Weight:
-						</Typography>
-						<Typography component="span" variant="span">
-							1 kg
-						</Typography>
-						<Typography color="grey" sx={{ mt: 1, mb: 1, fontWeight: "bold" }}>
-							Price
-						</Typography>
-						<Typography variant="h4" gutterBottom color="error">
-							$ 350.00
-						</Typography>
-						<Rating value={3} readOnly />
+						{!isLoading && (
+							<Typography variant="h4" component="h4" gutterBottom>
+								{data.productName}
+							</Typography>
+						)}
+						{isLoading && <Skeleton variant="text" />}
+						{!isLoading && data.quantity > 0 && (
+							<Chip label="In stock" color="success" />
+						)}
+						{!isLoading && data.quantity === 0 && (
+							<Chip label="Sold Out" color="error" />
+						)}
+						{isLoading && <Skeleton variant="text" />}
+
+						{!isLoading && (
+							<Box sx={{ mb: 1, mt: 1 }}>
+								{ReactHtmlParser(data.description)}
+							</Box>
+						)}
+						{isLoading && <Skeleton variant="text" />}
+
+						{!isLoading && (
+							<Typography
+								component="span"
+								variant="span"
+								sx={{ fontWeight: "bold" }}
+							>
+								Weight:
+							</Typography>
+						)}
+						{isLoading && <Skeleton variant="text" />}
+
+						{!isLoading && (
+							<Typography component="span" variant="span">
+								{data.weight} kg
+							</Typography>
+						)}
+						{isLoading && <Skeleton variant="text" />}
+						{!isLoading && (
+							<Typography
+								color="grey"
+								sx={{ mt: 1, mb: 1, fontWeight: "bold" }}
+							>
+								Price
+							</Typography>
+						)}
+
+						{!isLoading && (
+							<Typography variant="h4" gutterBottom color="error">
+								$ {data.price}
+							</Typography>
+						)}
+						{isLoading && <Skeleton variant="text" />}
+						{!isLoading && <Rating value={3} readOnly />}
 						<br />
-						<Button
-							variant="contained"
-							color="error"
-							startIcon={<Delete />}
-							sx={{ mt: 2 }}
-						>
-							Delete product
-						</Button>
+						{!isLoading && (
+							<Button
+								variant="contained"
+								color="error"
+								startIcon={<Delete />}
+								sx={{ mt: 2 }}
+								onClick={() => {
+									handleProductDelete(data._id);
+								}}
+							>
+								Delete product
+							</Button>
+						)}
+						{isLoading && (
+							<Skeleton variant="rectangle" width={150} height={50} />
+						)}
 					</Box>
 				</Stack>
 			</Paper>
@@ -86,13 +137,11 @@ const ProductDetails = () => {
 							<Tab>Review</Tab>
 						</TabList>
 						<TabPanel style={{ paddingTop: "1rem" }}>
-							<h1>Description</h1>
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-								Incidunt illo odio ratione labore eos. Quas neque ea, incidunt,
-								praesentium repellat quos vel laudantium quam error laborum
-								quod, dolore explicabo earum!
-							</p>
+							{!isLoading && ReactHtmlParser(data.description)}
+							{isLoading && <Skeleton variant="text" />}
+							{isLoading && <Skeleton variant="text" />}
+							{isLoading && <Skeleton variant="text" />}
+							{isLoading && <Skeleton variant="text" />}
 						</TabPanel>
 						<TabPanel style={{ paddingTop: "1rem" }}>
 							<h1>Reviews</h1>

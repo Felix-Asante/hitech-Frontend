@@ -5,7 +5,6 @@ import { Delete, RemoveRedEye } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import http from "../../../services/app-service";
-import { API_BASE_URL } from "../../../constants/constants";
 const ProductList = () => {
 	const columns = [
 		{ field: "id", headerName: "ID", width: 100 },
@@ -42,6 +41,7 @@ const ProductList = () => {
 
 	const [rows, setRows] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState(false);
 	useEffect(() => {
 		setIsLoading(true);
 		http
@@ -62,7 +62,7 @@ const ProductList = () => {
 
 				setRows(products);
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => setError(true));
 
 		const delay = setTimeout(() => {
 			setIsLoading(false);
@@ -98,7 +98,7 @@ const ProductList = () => {
 					{/* <h1>Loading</h1> */}
 				</Box>
 			)}
-			{!isLoading && rows.length === 0 && (
+			{!isLoading && rows.length === 0 && !error && (
 				<Box
 					sx={{
 						display: "flex",
