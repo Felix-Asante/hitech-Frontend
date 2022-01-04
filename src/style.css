@@ -55,3 +55,6 @@ a:hover {
 	max-height: 150px;
 	/* overflow: scroll; */
 }
+li.react-tabs__tab.react-tabs__tab--selected {
+	color: #d32f2f;
+}

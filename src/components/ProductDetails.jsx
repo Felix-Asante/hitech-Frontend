@@ -7,19 +7,14 @@ import {
 	Stack,
 	Typography,
 	Button,
-	Tabs,
-	Tab,
 } from "@mui/material";
-import { TabContext, TabList, TabPanel } from "@mui/lab/";
 
 import ImageGallery from "react-image-gallery";
 import { Delete } from "@mui/icons-material/";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
 
 const ProductDetails = () => {
-	const [value, setValue] = useState();
-	const handleChange = (event, newValue) => {
-		setValue(newValue);
-	};
 	const photos = [
 		{
 			original: "https://picsum.photos/id/1018/1000/600/",
@@ -83,20 +78,32 @@ const ProductDetails = () => {
 				</Stack>
 			</Paper>
 
-			<Paper>
+			<Paper sx={{ p: 3 }}>
 				<Box>
-					<TabContext value={{ value }}>
-						<Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-							<TabList onChange={handleChange}>
-								<Tabs value={value} textColor="error" indicatorColor="error">
-									<Tab label="Description" value="1" />
-									<Tab label="Reviews" value="2" />
-								</Tabs>
-							</TabList>
-						</Box>
-						<TabPanel value="1">description</TabPanel>
-						<TabPanel value="2">Reviews</TabPanel>
-					</TabContext>
+					<Tabs>
+						<TabList>
+							<Tab>Description</Tab>
+							<Tab>Review</Tab>
+						</TabList>
+						<TabPanel style={{ paddingTop: "1rem" }}>
+							<h1>Description</h1>
+							<p>
+								Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+								Incidunt illo odio ratione labore eos. Quas neque ea, incidunt,
+								praesentium repellat quos vel laudantium quam error laborum
+								quod, dolore explicabo earum!
+							</p>
+						</TabPanel>
+						<TabPanel style={{ paddingTop: "1rem" }}>
+							<h1>Reviews</h1>
+							<p>
+								Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+								Incidunt illo odio ratione labore eos. Quas neque ea, incidunt,
+								praesentium repellat quos vel laudantium quam error laborum
+								quod, dolore explicabo earum!
+							</p>
+						</TabPanel>
+					</Tabs>
 				</Box>
 			</Paper>
 		</Box>
