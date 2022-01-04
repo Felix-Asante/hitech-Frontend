@@ -22,6 +22,7 @@ import watch from "../assets/watch.jpeg";
 import fullBanner from "../assets/full_banner.jpeg";
 import NewsLetter from "../components/home/NewsLetter";
 import CartProvider from "../context/CartProvider";
+import useFetch from "../hooks/useFetch";
 const HomePage = () => {
 	const subDetailData = [
 		{
@@ -45,6 +46,9 @@ const HomePage = () => {
 			secText: "On Order Over $99",
 		},
 	];
+	const directions = ["left", "right"];
+	const { error, data, isLoading } = useFetch("/");
+	console.log("data", data);
 	return (
 		<CartProvider>
 			<Navbar />
@@ -68,8 +72,8 @@ const HomePage = () => {
 						marginTop: "40px",
 					}}
 				>
-					{subDetailData.map((detail) => {
-						return <SubDetail {...detail} />;
+					{subDetailData.map((detail, index) => {
+						return <SubDetail {...detail} key={index} />;
 					})}
 				</Box>
 				{/* DEAL AND SPECIAL PRODUCTS */}

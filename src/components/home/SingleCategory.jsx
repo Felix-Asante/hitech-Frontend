@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, Typography, Divider, Grid } from "@mui/material";
 import Slider from "react-slick";
-import ProductCard from "../ProductCard";
 import SingleCategoryProductCard from "./SingleCategoryProductCard";
 
 const SingleCategory = (props) => {

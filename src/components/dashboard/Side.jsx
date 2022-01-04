@@ -17,7 +17,7 @@ import {
 	Typography,
 } from "@mui/material";
 import { red } from "@mui/material/colors";
-import React, { memo } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 const menus = [

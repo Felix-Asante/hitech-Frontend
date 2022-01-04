@@ -9,10 +9,10 @@ import {
 import { makeStyles } from "@mui/styles";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { FilePond, File, registerPlugin } from "react-filepond";
+import { FilePond, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
-import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+// import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import FilePondPluginFileEncode from "filepond-plugin-file-encode";
 import http from "../../../services/app-service";

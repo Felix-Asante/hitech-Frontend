@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ProductList from "./ProductList";
-import { Box, Button, Paper, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import CategoryModal from "./modals/CategoryModal";
 const ProductPage = () => {

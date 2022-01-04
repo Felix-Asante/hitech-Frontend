@@ -13,12 +13,11 @@ import {
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import ImageGallery from "react-image-gallery";
-import { Delete, Http } from "@mui/icons-material/";
+import { Delete } from "@mui/icons-material/";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import useFetch from "../hooks/useFetch";
 import ReactHtmlParser from "react-html-parser";
-import deleteById from "../services/deleteById";
 import http from "../services/app-service";
 import { useNavigate } from "react-router-dom";
 

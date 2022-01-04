@@ -1,6 +1,6 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import React from "react";
-import { Route, Routes, Link } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "../components/dashboard/home/Home";
 import NewProduct from "../components/dashboard/Products/NewProduct";
 import ProductPage from "../components/dashboard/Products/ProductPage";

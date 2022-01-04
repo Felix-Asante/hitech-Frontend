@@ -1,7 +1,6 @@
 import React from "react";
 import {
 	Avatar,
-	Box,
 	Divider,
 	List,
 	ListItem,
@@ -9,7 +8,6 @@ import {
 	Typography,
 	Button,
 } from "@mui/material";
-import { Link } from "react-router-dom";
 import comp from "../../../assets/comp.jpeg";
 const TopSelling = () => {
 	return (

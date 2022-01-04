@@ -23,9 +23,9 @@ const Slide = () => {
 		height: "80%",
 	};
 	return (
-		<div style={styles}>
+		<Box style={styles}>
 			<Slider {...settings}>
-				<div>
+				<Box>
 					<img
 						// component="img"
 						src={banner1}
@@ -34,8 +34,8 @@ const Slide = () => {
 						width="100%"
 						height="80%"
 					/>
-				</div>
-				<div>
+				</Box>
+				<Box>
 					<img
 						// component="img"
 						src={banner2}
@@ -44,8 +44,8 @@ const Slide = () => {
 						width="100%"
 						height="80%"
 					/>
-				</div>
-				<div>
+				</Box>
+				<Box>
 					<img
 						// component="img"
 						src={banner3}
@@ -54,9 +54,9 @@ const Slide = () => {
 						width="100%"
 						height="80%"
 					/>
-				</div>
+				</Box>
 			</Slider>
-		</div>
+		</Box>
 	);
 };
 

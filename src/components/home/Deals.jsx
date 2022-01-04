@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, Box, Grid, Typography, Divider, Button } from "@mui/material";
+import { Paper, Box, Typography, Divider, Button } from "@mui/material";
 import microwave from "../../assets/micro.jpeg";
 const Deals = (props) => {
 	const dealStyles = {
@@ -47,7 +47,7 @@ const Deals = (props) => {
 							$69.00
 						</Typography>
 						<Divider sx={{ marginBottom: "10px" }} />
-						<Typography color="grey.main" nowrap>
+						<Typography color="grey.main" nowrap="true">
 							Lorem Ipsum is simply dummy text of the printing and typesetting
 							industry. Lorem Ipsum has been the industry's standard.
 						</Typography>

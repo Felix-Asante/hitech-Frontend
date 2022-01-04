@@ -64,8 +64,8 @@ const LeftCategoryMenu = () => {
 	];
 	return (
 		<Paper sx={{ background: "primary", padding: "16px", height: "92%" }}>
-			{categories.map((category) => {
-				return <CategoryItem {...category} />;
+			{categories.map((category, i) => {
+				return <CategoryItem {...category} key={i} />;
 			})}
 		</Paper>
 	);
