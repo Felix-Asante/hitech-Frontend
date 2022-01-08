@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { Container, Box, Grid } from "@mui/material";
 import CategorySearchBar from "../components/CategorySearchBar";
@@ -22,7 +22,7 @@ import watch from "../assets/watch.jpeg";
 import fullBanner from "../assets/full_banner.jpeg";
 import NewsLetter from "../components/home/NewsLetter";
 import CartProvider from "../context/CartProvider";
-import useFetch from "../hooks/useFetch";
+import http from "../services/app-service";
 const HomePage = () => {
 	const subDetailData = [
 		{
@@ -46,9 +46,31 @@ const HomePage = () => {
 			secText: "On Order Over $99",
 		},
 	];
+	const [data, setData] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
+	useEffect(() => {
+		http
+			.requestGET("/")
+			.then((res) => {
+				const filteredResult = res.data.reduce((prev, current) => {
+					if (!(current.data.length === 0 || current.data.length === 1)) {
+						prev.push(current);
+					}
+					return prev;
+				}, []);
+				filteredResult &&
+					setData(
+						filteredResult.length > 2
+							? filteredResult.slice(0, 1)
+							: filteredResult
+					);
+				setIsLoading(false);
+			})
+			.catch((err) => console.log(err));
+	}, []);
+
 	const directions = ["left", "right"];
-	const { error, data, isLoading } = useFetch("/");
-	console.log("data", data);
+	const divider = ["75%", "47%"];
 	return (
 		<CartProvider>
 			<Navbar />
@@ -112,29 +134,19 @@ const HomePage = () => {
 					</Grid>
 				</Grid>
 				{/* SINGLE PRODUCT : COMPUTER & LAPTOP */}
-				<Box sx={{ mt: 8 }}>
-					<SingleCategory
-						slide={2}
-						div="75%"
-						title="Computers"
-						sub="& Laptop"
-						bannerPosition="left"
-						banner={computers}
-						h="95%"
-					/>
-				</Box>
-				{/* SINGLE PRODUCT : SMARTWATCH & MOBILE */}
-				<Box sx={{ mt: 8 }}>
-					<SingleCategory
-						slide={2}
-						div="47%"
-						title="Smartwatch"
-						sub="& Mobiles"
-						bannerPosition="right"
-						banner={watch}
-						h="95%"
-					/>
-				</Box>
+				{data &&
+					data.map((item, index) => {
+						return (
+							<SingleCategory
+								key={index}
+								name={item.name}
+								data={item.data}
+								direction={directions[index]}
+								div={divider[index]}
+								isLoading={isLoading}
+							/>
+						);
+					})}
 				{/* FULL BANNER */}
 				<Box src={fullBanner} component="img" width="100%" sx={{ mt: 8 }} />
 			</Container>

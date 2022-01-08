@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Box, Paper, Typography, Button } from "@mui/material";
 import { FavoriteBorder, Favorite } from "@mui/icons-material";
-import microwave from "../../assets/micro.jpeg";
-
+import cartContext from "../../context/cart-context";
+import { ADD_TO_CART } from "../../context/actions";
 const SingleCategoryProductCard = (props) => {
 	const [favorite, setFavorite] = useState(false);
 	const [cart, setCart] = useState(false);
 	const [itemInCart, setItemInCart] = useState("1");
+	const cartCtx = useContext(cartContext);
 	return (
 		<Paper
 			sx={{
@@ -21,18 +22,18 @@ const SingleCategoryProductCard = (props) => {
 			elevation={0}
 		>
 			<Box
-				src={microwave}
-				alt="microwave"
+				src={props.image}
+				alt={props.productName}
 				component="img"
-				sx={{ width: "50%", height: "160px" }}
+				sx={{ width: "30%", height: "80px", objectFit: "contain" }}
 			/>
 			<Box>
 				<Typography component="strong" variant="strong" sx={{ mb: 1 }}>
-					Modern Microwave
+					{props.productName}
 				</Typography>
 				<Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
 					<Typography variant="h5" component="h5" color="error">
-						$69.00
+						${props.price}
 					</Typography>
 					<Typography color="grey.500" sx={{ fontSize: "14px", ml: 1 }}>
 						(1250 sold)
@@ -46,6 +47,15 @@ const SingleCategoryProductCard = (props) => {
 							elevation={0}
 							onClick={() => {
 								setCart(true);
+								cartCtx.addToCart({
+									type: ADD_TO_CART,
+									payload: {
+										price: props.price,
+										name: props.productName,
+										id: props.id,
+										qty: 1,
+									},
+								});
 							}}
 						>
 							ADD TO CART
