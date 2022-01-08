@@ -1,13 +1,22 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Box, Paper, Typography, Button } from "@mui/material";
 import { FavoriteBorder, Favorite } from "@mui/icons-material";
 import cartContext from "../../context/cart-context";
 import { ADD_TO_CART } from "../../context/actions";
 const SingleCategoryProductCard = (props) => {
 	const [favorite, setFavorite] = useState(false);
-	const [cart, setCart] = useState(false);
 	const [itemInCart, setItemInCart] = useState("1");
+	const [alreadyInCart, setAlreadyInCart] = useState(false);
 	const cartCtx = useContext(cartContext);
+
+	useEffect(() => {
+		const alreadyAddedToCart = cartCtx.items.filter(
+			(item) => item.id === props.id
+		);
+		if (alreadyAddedToCart.length > 0) {
+			setAlreadyInCart(true);
+		}
+	}, []);
 	return (
 		<Paper
 			sx={{
@@ -28,7 +37,12 @@ const SingleCategoryProductCard = (props) => {
 				sx={{ width: "30%", height: "80px", objectFit: "contain" }}
 			/>
 			<Box>
-				<Typography component="strong" variant="strong" sx={{ mb: 1 }}>
+				<Typography
+					component="a"
+					variant="a"
+					sx={{ mb: 1, fontWeight: "bold" }}
+					href={`/${props.productName}/${props.id}`}
+				>
 					{props.productName}
 				</Typography>
 				<Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
@@ -40,13 +54,14 @@ const SingleCategoryProductCard = (props) => {
 					</Typography>
 				</Box>
 				<Box sx={{ display: "flex", alignItems: "center", gap: "10px", mt: 1 }}>
-					{!cart && (
+					{!alreadyInCart && (
 						<Button
 							color="error"
 							variant="contained"
 							elevation={0}
 							onClick={() => {
-								setCart(true);
+								// setCart(true);
+								setAlreadyInCart(true);
 								cartCtx.addToCart({
 									type: ADD_TO_CART,
 									payload: {
@@ -61,7 +76,7 @@ const SingleCategoryProductCard = (props) => {
 							ADD TO CART
 						</Button>
 					)}
-					{cart && (
+					{alreadyInCart && (
 						<Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
 							<Button color="error" variant="contained">
 								-

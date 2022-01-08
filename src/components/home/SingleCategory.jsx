@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Divider, Grid, Skeleton } from "@mui/material";
+import { Box, Typography, Divider, Grid } from "@mui/material";
 import Slider from "react-slick";
 import SingleCategoryProductCard from "./SingleCategoryProductCard";
 import http from "../../services/app-service";
@@ -16,7 +16,7 @@ const SingleCategory = (props) => {
 		rows: 1,
 	};
 
-	const { name, div, direction, data, isLoading } = props;
+	const { name, div, direction, data } = props;
 
 	return (
 		<Box sx={{ position: "relative", mt: 8 }}>
@@ -27,35 +27,27 @@ const SingleCategory = (props) => {
 					marginBottom: "20px",
 				}}
 			>
-				{!isLoading && (
-					<Typography
-						variant="span"
-						component="span"
-						gutterBottom
-						sx={{ fontSize: "1.4rem", marginRight: "5px" }}
-					>
-						{name}
-					</Typography>
-				)}
-				{isLoading && <Skeleton variant="text" width={400} />}
+				<Typography
+					variant="span"
+					component="span"
+					gutterBottom
+					sx={{ fontSize: "1.4rem", marginRight: "5px" }}
+				>
+					{name}
+				</Typography>
 
 				<Divider flexItem sx={{ height: "5px", width: div, mt: 1.3, ml: 1 }} />
 			</Box>
 			<Grid container spacing={4}>
 				{direction === "left" && (
 					<Grid item md={3}>
-						{!isLoading && (
-							<Box
-								src={ban1}
-								alt="banner"
-								component="img"
-								width="100%"
-								height="95%"
-							/>
-						)}
-						{isLoading && (
-							<Skeleton variant="rectangle" width={300} height={300} />
-						)}
+						<Box
+							src={ban1}
+							alt="banner"
+							component="img"
+							width="100%"
+							height="95%"
+						/>
 					</Grid>
 				)}
 				<Grid item md={9}>
@@ -67,7 +59,6 @@ const SingleCategory = (props) => {
 									image={info.productPhotos[0].image}
 									key={i}
 									price={info.price}
-									isLoading={isLoading}
 									id={info._id}
 								/>
 							);
@@ -76,18 +67,13 @@ const SingleCategory = (props) => {
 				</Grid>
 				{direction === "right" && (
 					<Grid item md={3}>
-						{!isLoading && (
-							<Box
-								src={ban2}
-								alt="banner"
-								component="img"
-								width="100%"
-								height="95%"
-							/>
-						)}
-						{isLoading && (
-							<Skeleton variant="rectangle" width={300} height={300} />
-						)}
+						<Box
+							src={ban2}
+							alt="banner"
+							component="img"
+							width="100%"
+							height="95%"
+						/>
 					</Grid>
 				)}
 			</Grid>

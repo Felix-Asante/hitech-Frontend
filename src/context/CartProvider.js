@@ -6,15 +6,17 @@ const cartReducer = (state, action) => {
 	switch (action.type) {
 		case ADD_TO_CART:
 			const { payload } = action;
+			const cartItems = state.items.concat(payload.payload);
+			localStorage.setItem("cartItems", JSON.stringify(cartItems));
 			return {
 				totalAmount: state.totalAmount + payload.price,
-				items: state.items.concat(payload),
+				items: cartItems,
 			};
 	}
 };
 const CartProvider = (props) => {
 	const initialState = {
-		items: [],
+		items: JSON.parse(localStorage.getItem("cartItems")) || [],
 		totalAmount: 0,
 	};
 	const [cart, dispatch] = useReducer(cartReducer, initialState);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import { Container, Box, Grid } from "@mui/material";
+import { Container, Box, Grid, Skeleton, Stack } from "@mui/material";
 import CategorySearchBar from "../components/CategorySearchBar";
 import LeftCategoryMenu from "../components/LeftCategoryMenu";
 import Slide from "../components/Slide";
@@ -17,8 +17,6 @@ import ban1 from "../assets/ban1.jpeg";
 import ban2 from "../assets/ban2.jpeg";
 import { Link } from "react-router-dom";
 import SingleCategory from "../components/home/SingleCategory";
-import computers from "../assets/comp.jpeg";
-import watch from "../assets/watch.jpeg";
 import fullBanner from "../assets/full_banner.jpeg";
 import NewsLetter from "../components/home/NewsLetter";
 import CartProvider from "../context/CartProvider";
@@ -135,6 +133,7 @@ const HomePage = () => {
 				</Grid>
 				{/* SINGLE PRODUCT : COMPUTER & LAPTOP */}
 				{data &&
+					!isLoading &&
 					data.map((item, index) => {
 						return (
 							<SingleCategory
@@ -147,6 +146,21 @@ const HomePage = () => {
 							/>
 						);
 					})}
+				{isLoading && (
+					<>
+						<Stack direction="row" spacing={1} sx={{ mt: 8, mb: 3 }}>
+							<Skeleton variant="text" />
+							<Skeleton variant="text" width={1200} />
+						</Stack>
+						<Stack direction="row" spacing={3}>
+							<Skeleton variant="rectangle" width={200} height={100} />
+							<Skeleton variant="rectangle" width={200} height={100} />
+							<Skeleton variant="rectangle" width={200} height={100} />
+							<Skeleton variant="rectangle" width={200} height={100} />
+							<Skeleton variant="rectangle" width={200} height={100} />
+						</Stack>
+					</>
+				)}
 				{/* FULL BANNER */}
 				<Box src={fullBanner} component="img" width="100%" sx={{ mt: 8 }} />
 			</Container>
