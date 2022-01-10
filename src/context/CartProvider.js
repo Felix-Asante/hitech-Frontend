@@ -6,7 +6,11 @@ const cartReducer = (state, action) => {
 	switch (action.type) {
 		case ADD_TO_CART:
 			const { payload } = action;
-			const cartItems = state.items.concat(payload.payload);
+			const cartItems = state.items.concat({
+				...payload.payload,
+				alreadyAddedToCart: true,
+			});
+
 			localStorage.setItem("cartItems", JSON.stringify(cartItems));
 			return {
 				totalAmount: state.totalAmount + payload.price,

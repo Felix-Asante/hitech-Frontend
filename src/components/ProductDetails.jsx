@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
 	Box,
 	Chip,
@@ -20,10 +20,14 @@ import useFetch from "../hooks/useFetch";
 import ReactHtmlParser from "react-html-parser";
 import http from "../services/app-service";
 import { useNavigate } from "react-router-dom";
-
+import cartContext from "../context/cart-context";
+import { ADD_TO_CART } from "../context/actions";
 const ProductDetails = () => {
+	const cartCtx = useContext(cartContext);
 	const Navigate = useNavigate();
 	const [isDeleting, setIsDeleting] = useState(false);
+	const [addedToCart, setAddedToCart] = useState(false);
+	const [qty, setQty] = useState(0);
 	const handleProductDelete = (id) => {
 		setIsDeleting(true);
 		const endPoint = "/product/" + id;
@@ -37,8 +41,9 @@ const ProductDetails = () => {
 				console.log(err);
 			});
 	};
-	const { id } = useParams();
+	const { id, productName } = useParams();
 	const { isLoading, error, data } = useFetch(`/product/${id}`);
+
 	const photos =
 		data.productPhotos &&
 		data.productPhotos.reduce((prevImage, currentImage) => {
@@ -47,6 +52,17 @@ const ProductDetails = () => {
 				thumbnail: currentImage.image,
 			});
 		}, []);
+
+	useEffect(() => {
+		if (!productName) {
+			return;
+		}
+		const addToCart = cartCtx.items.filter((item) => item.id === id);
+		if (addToCart.length > 0) {
+			setQty(addToCart[0].qty);
+			setAddedToCart(true);
+		}
+	}, [addedToCart, qty]);
 	return (
 		<Box sx={{ flex: 4, height: "calc(100vh - 80px)", p: 4 }}>
 			{!error && (
@@ -129,7 +145,8 @@ const ProductDetails = () => {
 							{isLoading && <Skeleton variant="text" />}
 							{!isLoading && <Rating value={3} readOnly />}
 							<br />
-							{!isLoading && (
+							<br />
+							{!isLoading && !productName && (
 								<Button
 									variant="contained"
 									color="error"
@@ -141,6 +158,41 @@ const ProductDetails = () => {
 								>
 									Delete product
 								</Button>
+							)}
+
+							{!isLoading && productName && !addedToCart && (
+								<Button
+									variant="contained"
+									color="error"
+									onClick={() => {
+										cartCtx.addToCart({
+											type: ADD_TO_CART,
+											payload: {
+												price: data.price,
+												name: data.productName,
+												id: data._id,
+												qty: 1,
+												photo: data.productPhotos[0],
+											},
+										});
+										setAddedToCart(true);
+									}}
+								>
+									Add to Cart
+								</Button>
+							)}
+							{!isLoading && addedToCart && (
+								<Box
+									sx={{ display: "flex", alignItems: "center", gap: "10px" }}
+								>
+									<Button color="error" variant="contained">
+										-
+									</Button>
+									<Box>{qty}</Box>
+									<Button color="error" variant="contained">
+										+
+									</Button>
+								</Box>
 							)}
 							{isLoading && (
 								<Skeleton variant="rectangle" width={150} height={50} />

@@ -69,6 +69,7 @@ const SingleCategoryProductCard = (props) => {
 										name: props.productName,
 										id: props.id,
 										qty: 1,
+										photo: props.image,
 									},
 								});
 							}}

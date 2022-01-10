@@ -68,12 +68,14 @@ const Navbar = (props) => {
 			<AppBar color="primary">
 				<Container>
 					<Toolbar className={classes.toolbar}>
-						<Box
-							component="img"
-							sx={{ width: 80, height: 30 }}
-							src={logo}
-							alt="Hitech"
-						/>
+						<a href="/">
+							<Box
+								component="img"
+								sx={{ width: 80, height: 30 }}
+								src={logo}
+								alt="Hitech"
+							/>
+						</a>
 						<Box className={classes.searchForm}>
 							<form
 								action=""

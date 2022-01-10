@@ -1,12 +1,19 @@
 import React from "react";
 import { Box, Container } from "@mui/material";
 import Navbar from "../components/Navbar";
-const ProductDetails = () => {
+import ProductDetails from "../components/ProductDetails";
+import CartProvider from "../context/CartProvider";
+const ProductInfos = () => {
 	return (
-		<React.Fragment>
+		<CartProvider>
 			<Navbar />
-		</React.Fragment>
+			<Container>
+				<Box sx={{ mt: 8 }}>
+					<ProductDetails />
+				</Box>
+			</Container>
+		</CartProvider>
 	);
 };
 
-export default ProductDetails;
+export default ProductInfos;
