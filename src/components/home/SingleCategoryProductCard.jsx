@@ -8,15 +8,26 @@ const SingleCategoryProductCard = (props) => {
 	const [itemInCart, setItemInCart] = useState("1");
 	const [alreadyInCart, setAlreadyInCart] = useState(false);
 	const cartCtx = useContext(cartContext);
-
+	const items = localStorage.getItem("cartItems");
 	useEffect(() => {
+		// if (cartCtx.items.length === 0) {
+		// 	setAlreadyInCart(false);
+		// 	return;
+		// }
 		const alreadyAddedToCart = cartCtx.items.filter(
 			(item) => item.id === props.id
 		);
 		if (alreadyAddedToCart.length > 0) {
 			setAlreadyInCart(true);
+			setItemInCart(alreadyAddedToCart[0].qty);
+		} else {
+			setAlreadyInCart(false);
 		}
-	}, []);
+	}, [items]);
+
+	const modifyQuantity = (id, actionType) => {
+		cartCtx.modifyQuantity(id, actionType);
+	};
 	return (
 		<Paper
 			sx={{
@@ -79,11 +90,23 @@ const SingleCategoryProductCard = (props) => {
 					)}
 					{alreadyInCart && (
 						<Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-							<Button color="error" variant="contained">
+							<Button
+								color="error"
+								variant="contained"
+								onClick={() => {
+									modifyQuantity(props.id, "DECREASE");
+								}}
+							>
 								-
 							</Button>
 							<Box>{itemInCart}</Box>
-							<Button color="error" variant="contained">
+							<Button
+								color="error"
+								variant="contained"
+								onClick={() => {
+									modifyQuantity(props.id, "INCREASE");
+								}}
+							>
 								+
 							</Button>
 						</Box>

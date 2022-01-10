@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box, Typography, Divider, Grid } from "@mui/material";
 import Slider from "react-slick";
 import SingleCategoryProductCard from "./SingleCategoryProductCard";
-import http from "../../services/app-service";
 import ban1 from "../../assets/ban1.jpeg";
 import ban2 from "../../assets/ban2.jpeg";
 const SingleCategory = (props) => {
-	const { slide } = props;
+	// const { slide } = props;
 	const settings = {
 		infinite: true,
 		speed: 500,

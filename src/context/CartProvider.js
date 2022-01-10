@@ -16,6 +16,39 @@ const cartReducer = (state, action) => {
 				totalAmount: state.totalAmount + payload.price,
 				items: cartItems,
 			};
+
+		case MODIFY:
+			const { id, actionType } = action.payload;
+			const itemIndex = state.items.findIndex((item) => item.id === id);
+			let quantity = Number(state.items[itemIndex].qty);
+			let totalAmount;
+			const price = Number(state.items[itemIndex].price);
+
+			if (actionType === "INCREASE") {
+				state.items[itemIndex].qty = quantity + 1;
+				totalAmount = state.totalAmount + price;
+				localStorage.setItem("cartItems", JSON.stringify(state.items));
+				return {
+					totalAmount: totalAmount,
+					items: state.items,
+				};
+			} else {
+				totalAmount = state.totalAmount - price;
+				if (quantity === 1) {
+					state.items.splice(itemIndex, 1);
+				} else {
+					state.items[itemIndex].qty = --quantity;
+				}
+				localStorage.setItem("cartItems", JSON.stringify(state.items));
+
+				return {
+					totalAmount: totalAmount,
+					items: state.items,
+				};
+			}
+
+		default:
+			console.log("NO MATCH");
 	}
 };
 const CartProvider = (props) => {
@@ -28,8 +61,8 @@ const CartProvider = (props) => {
 	const addToCart = (item) => {
 		dispatch({ type: ADD_TO_CART, payload: item });
 	};
-	const modifyQuantity = (id) => {
-		dispatch({ type: MODIFY, payload: id });
+	const modifyQuantity = (id, actionType) => {
+		dispatch({ type: MODIFY, payload: { id, actionType } });
 	};
 	const removeFromCart = (id) => {
 		dispatch({ type: REMOVE_FROM_CART, payload: id });

@@ -28,6 +28,7 @@ const ProductDetails = () => {
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [addedToCart, setAddedToCart] = useState(false);
 	const [qty, setQty] = useState(0);
+	const items = localStorage.getItem("cartItems");
 	const handleProductDelete = (id) => {
 		setIsDeleting(true);
 		const endPoint = "/product/" + id;
@@ -61,8 +62,13 @@ const ProductDetails = () => {
 		if (addToCart.length > 0) {
 			setQty(addToCart[0].qty);
 			setAddedToCart(true);
+		} else {
+			setAddedToCart(false);
 		}
-	}, [addedToCart, qty]);
+	}, [addedToCart, qty, items]);
+	const modifyQuantity = (id, actionType) => {
+		cartCtx.modifyQuantity(id, actionType);
+	};
 	return (
 		<Box sx={{ flex: 4, height: "calc(100vh - 80px)", p: 4 }}>
 			{!error && (
@@ -172,7 +178,7 @@ const ProductDetails = () => {
 												name: data.productName,
 												id: data._id,
 												qty: 1,
-												photo: data.productPhotos[0],
+												photo: data.productPhotos[0].image,
 											},
 										});
 										setAddedToCart(true);
@@ -185,11 +191,23 @@ const ProductDetails = () => {
 								<Box
 									sx={{ display: "flex", alignItems: "center", gap: "10px" }}
 								>
-									<Button color="error" variant="contained">
+									<Button
+										color="error"
+										variant="contained"
+										onClick={() => {
+											modifyQuantity(id, "DECREASE");
+										}}
+									>
 										-
 									</Button>
 									<Box>{qty}</Box>
-									<Button color="error" variant="contained">
+									<Button
+										color="error"
+										variant="contained"
+										onClick={() => {
+											modifyQuantity(id, "INCREASE");
+										}}
+									>
 										+
 									</Button>
 								</Box>
