@@ -68,3 +68,18 @@ li.react-tabs__tab.react-tabs__tab--selected {
 	height: 500px;
 	object-fit: contain;
 }
+.cart-logo:hover {
+	color: inherit;
+}
+
+label {
+	display: block;
+	margin: 8px 0;
+}
+input {
+	padding: 9px 15px;
+	border: 0;
+	outline: none;
+	background: white;
+	width: 100%;
+}

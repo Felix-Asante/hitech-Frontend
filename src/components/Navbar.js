@@ -142,11 +142,11 @@ const Navbar = (props) => {
 									</Paper>
 								)}
 							</Box>
-							<Box>
+							<a href="/cart" className="cart-logo">
 								<Badge badgeContent={cartCount} color="error" max={9}>
 									<ShoppingCart />
 								</Badge>
-							</Box>
+							</a>
 						</Box>
 					</Toolbar>
 				</Container>
