@@ -8,6 +8,7 @@ import HomePage from "./pages/HomePage";
 import Dashboard from "./pages/Dashboard";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
+import CartProvider from "./context/CartProvider";
 function App() {
 	const theme = createTheme({
 		palette: {
@@ -26,7 +27,14 @@ function App() {
 					<Route path="/" element={<HomePage />} />
 					<Route path="admin/*" element={<Dashboard />} />
 					<Route path="/:productName/:id" element={<ProductDetails />} />
-					<Route path="/cart" element={<Cart />} />
+					<Route
+						path="/cart"
+						element={
+							<CartProvider>
+								<Cart />
+							</CartProvider>
+						}
+					/>
 				</Routes>
 			</BrowserRouter>
 		</ThemeProvider>

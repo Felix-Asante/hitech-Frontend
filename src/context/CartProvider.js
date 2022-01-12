@@ -10,10 +10,12 @@ const cartReducer = (state, action) => {
 				...payload.payload,
 				alreadyAddedToCart: true,
 			});
+			const totalAmount = state.totalAmount + Number(payload.payload.price);
 
 			localStorage.setItem("cartItems", JSON.stringify(cartItems));
+			localStorage.setItem("tt", JSON.stringify(totalAmount));
 			return {
-				totalAmount: state.totalAmount + payload.price,
+				totalAmount: totalAmount,
 				items: cartItems,
 			};
 
@@ -21,34 +23,50 @@ const cartReducer = (state, action) => {
 			const { id, actionType } = action.payload;
 			const itemIndex = state.items.findIndex((item) => item.id === id);
 			let quantity = Number(state.items[itemIndex].qty);
-			let totalAmount;
+			let totalAmounts;
 			const price = Number(state.items[itemIndex].price);
 
 			if (actionType === "INCREASE") {
 				state.items[itemIndex].qty = quantity + 1;
-				totalAmount = state.totalAmount + price;
+				totalAmounts = state.totalAmount + price;
 				localStorage.setItem("cartItems", JSON.stringify(state.items));
-				return {
-					totalAmount: totalAmount,
-					items: state.items,
-				};
 			} else {
-				totalAmount = state.totalAmount - price;
+				totalAmounts = state.totalAmount - price;
 				if (quantity === 1) {
 					state.items.splice(itemIndex, 1);
 				} else {
 					state.items[itemIndex].qty = --quantity;
 				}
 				localStorage.setItem("cartItems", JSON.stringify(state.items));
-
-				return {
-					totalAmount: totalAmount,
-					items: state.items,
-				};
 			}
+			console.log("mtt", totalAmount);
+			localStorage.setItem("tt", JSON.stringify(totalAmounts));
+
+			return {
+				totalAmount: totalAmounts,
+				items: state.items,
+			};
+		case REMOVE_FROM_CART:
+			const key = action.payload;
+			const indexOfItem = state.items.findIndex((item) => key === item.id);
+			let total, items;
+			if (indexOfItem < 0) {
+				total = state.totalAmount;
+				items = state.items;
+			} else {
+				const price =
+					Number(state.items[indexOfItem].qty) *
+					Number(state.items[indexOfItem].price);
+				total = state.totalAmount - price;
+				items = state.items.filter((item) => item.id !== key);
+			}
+			localStorage.setItem("cartItems", JSON.stringify(items));
+			localStorage.setItem("tt", JSON.stringify(total));
+
+			return { totalAmount: total, items: items };
 
 		default:
-			console.log("NO MATCH");
+			return { totalAmount: state.totalAmount, items: state.items };
 	}
 };
 const CartProvider = (props) => {
@@ -62,6 +80,7 @@ const CartProvider = (props) => {
 		dispatch({ type: ADD_TO_CART, payload: item });
 	};
 	const modifyQuantity = (id, actionType) => {
+		console.log("dispatch modify");
 		dispatch({ type: MODIFY, payload: { id, actionType } });
 	};
 	const removeFromCart = (id) => {

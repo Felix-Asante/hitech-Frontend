@@ -28,6 +28,7 @@ const SingleCategoryProductCard = (props) => {
 	const modifyQuantity = (id, actionType) => {
 		cartCtx.modifyQuantity(id, actionType);
 	};
+
 	return (
 		<Paper
 			sx={{
